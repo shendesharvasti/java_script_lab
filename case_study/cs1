@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College Department Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1>Department of Computer Science</h1>
+    <p>Symbiosis Institute of Technology, Nagpur</p>
+    <a class="cta" href="student_info.html">View Student Information</a>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>About the Department</h2>
+      <p>
+        The Computer Science Department is committed to providing quality education,
+        practical learning, and innovation in technology.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Key Highlights</h2>
+      <ul>
+        <li>Modern computer labs</li>
+        <li>Experienced faculty members</li>
+        <li>Industry-oriented projects</li>
+        <li>Industry visits</li>
+        <li>Strong placement support</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
