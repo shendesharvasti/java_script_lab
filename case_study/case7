@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Handling and Form Validation</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+        }
+
+        form {
+            width: 350px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Gym Admission Form</h2>
+
+<form id="gymForm">
+
+    <label>Name:</label>
+    <input type="text" id="name">
+    <span id="nameError" class="error"></span>
+
+    <label>Email:</label>
+    <input type="text" id="email">
+    <span id="emailError" class="error"></span>
+
+    <label>Age:</label>
+    <input type="number" id="age">
+    <span id="ageError" class="error"></span>
+
+    <label>Membership:</label>
+    <select id="membership">
+        <option value="">Select Membership</option>
+        <option value="Monthly">Monthly</option>
+        <option value="Quarterly">Quarterly</option>
+        <option value="Yearly">Yearly</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+
+<script>
+
+// ==========================================
+// 1. ACCESS ELEMENTS USING JAVASCRIPT
+// ==========================================
+
+let form = document.getElementById("gymForm");
+let name = document.getElementById("name");
+let email = document.getElementById("email");
+let age = document.getElementById("age");
+let membership = document.getElementById("membership");
+
+
+// ==========================================
+// 2. FOCUS EVENT
+// ==========================================
+
+name.addEventListener("focus", function() {
+    name.style.backgroundColor = "lightyellow";
+});
+
+email.addEventListener("focus", function() {
+    email.style.backgroundColor = "lightyellow";
+});
+
+
+// ==========================================
+// 3. CHANGE EVENT
+// ==========================================
+
+membership.addEventListener("change", function() {
+
+    alert("Membership selected: " + membership.value);
+
+});
+
+
+// ==========================================
+// 4. SUBMIT EVENT
+// ==========================================
+
+form.addEventListener("submit", function(event) {
+
+    // Stop form from refreshing the page
+    event.preventDefault();
+
+    // Remove previous error messages
+    document.getElementById("nameError").innerHTML = "";
+    document.getElementById("emailError").innerHTML = "";
+    document.getElementById("ageError").innerHTML = "";
+
+    let valid = true;
+
+
+    // ==========================================
+    // 5. VALIDATE EMPTY NAME
+    // ==========================================
+
+    if (name.value.trim() === "") {
+
+        document.getElementById("nameError").innerHTML =
+            "Name cannot be empty";
+
+        valid = false;
+    }
+
+
+    // ==========================================
+    // 6. VALIDATE EMAIL
+    // ==========================================
+
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+    if (email.value.trim() === "") {
+
+        document.getElementById("emailError").innerHTML =
+            "Email cannot be empty";
+
+        valid = false;
+
+    } 
+    else if (!emailPattern.test(email.value)) {
+
+        document.getElementById("emailError").innerHTML =
+            "Enter a valid email";
+
+        valid = false;
+    }
+
+
+    // ==========================================
+    // 7. VALIDATE AGE
+    // ==========================================
+
+    if (age.value === "") {
+
+        document.getElementById("ageError").innerHTML =
+            "Age cannot be empty";
+
+        valid = false;
+
+    }
+    else if (age.value < 16) {
+
+        document.getElementById("ageError").innerHTML =
+            "Age must be 16 or above";
+
+        valid = false;
+    }
+
+
+    // ==========================================
+    // 8. FINAL RESULT
+    // ==========================================
+
+    if (valid) {
+
+        alert("Form submitted successfully!");
+
+        form.reset();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
