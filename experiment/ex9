@@ -1,0 +1,160 @@
+<!-- Sharvasti shende 24070521194-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theme Storage Chooser</title>
+  <style>
+    /* Theme Variables */
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #333333;
+      --card-bg: #f4f4f4;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #1e1e1e;
+      --text-color: #ffffff;
+      --card-bg: #2d2d2d;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 320px;
+    }
+
+    .setting-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      font-weight: bold;
+      transition: opacity 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .status {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #777;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Theme Settings</h2>
+
+    <!-- Theme Dropdown -->
+    <div class="setting-group">
+      <label for="themeSelect">Select Theme:</label>
+      <select id="themeSelect">
+        <option value="light">Light Theme</option>
+        <option value="dark">Dark Theme</option>
+      </select>
+
+      <!-- Save Option Buttons -->
+      <div class="btn-group">
+        <button onclick="saveToLocal()">Save to LocalStorage</button>
+        <button onclick="saveToSession()">Save to SessionStorage</button>
+        <button onclick="resetDefault()">Reset to Default</button>
+      </div>
+    </div>
+
+    <div class="status" id="statusMsg">Current State: Default (Light)</div>
+  </div>
+
+  <script>
+    const themeSelect = document.getElementById('themeSelect');
+    const statusMsg = document.getElementById('statusMsg');
+
+    // Helper function to update theme UI
+    function applyTheme(theme, storageSource) {
+      document.documentElement.setAttribute('data-theme', theme);
+      themeSelect.value = theme;
+      statusMsg.textContent = `Active Theme: ${theme.toUpperCase()} (${storageSource})`;
+    }
+
+    // 1. Save selected theme to LocalStorage
+    function saveToLocal() {
+      const selectedTheme = themeSelect.value;
+      sessionStorage.removeItem('userTheme'); // Clear session storage to avoid conflicts
+      localStorage.setItem('userTheme', selectedTheme);
+      applyTheme(selectedTheme, 'Saved in LocalStorage');
+    }
+
+    // 2. Save selected theme to SessionStorage
+    function saveToSession() {
+      const selectedTheme = themeSelect.value;
+      localStorage.removeItem('userTheme'); // Clear local storage to avoid conflicts
+      sessionStorage.setItem('userTheme', selectedTheme);
+      applyTheme(selectedTheme, 'Saved in SessionStorage');
+    }
+
+    // 3. Reset to default theme
+    function resetDefault() {
+      localStorage.removeItem('userTheme');
+      sessionStorage.removeItem('userTheme');
+      applyTheme('light', 'No Storage / Default');
+    }
+
+    // 4. On Page Load: Read saved preference
+    window.addEventListener('DOMContentLoaded', () => {
+      const localTheme = localStorage.getItem('userTheme');
+      const sessionTheme = sessionStorage.getItem('userTheme');
+
+      if (localTheme) {
+        applyTheme(localTheme, 'Loaded from LocalStorage');
+      } else if (sessionTheme) {
+        applyTheme(sessionTheme, 'Loaded from SessionStorage');
+      } else {
+        applyTheme('light', 'Default');
+      }
+    });
+  </script>
+</body>
+</html>
