@@ -1,0 +1,20 @@
+let text = "Hello, welcome to SITNagpur. Contact us at sitngagpur@siu.edu or siueducation@siu.in. "
+
+let email = "student@example.com";
+let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+console.log("Valide Email: ", emailRegex.test(email));
+
+let emails = text.match(/[^\s@]+@[^\s@]+\.[^\s@]+/g);
+console.log("Extracted Emails:", emails);
+
+console.log("Uppercase: ", text.toUpperCase());
+console.log("Lowercase: ", text.toLowerCase());
+console.log("Contains 'Welcome': ", text.includes("welcome"));
+console.log("Text Length: ", text.length);
+
+let words = text.split(/\s+/);
+console.log("Number of words: ", words.length);
+
+let count = (text.match(/email/gi)|| []).length;
+console.log("Occurrances of 'email': ", count);
