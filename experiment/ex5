@@ -1,0 +1,25 @@
+//Shopping cart using arrays and objects
+//Array of product objects
+
+let cart = [
+    {name: "Book", price: 300, quantity: 2},
+    {name: "Pen", price: 200, quantity: 5},
+    {name: "Bag", price: 500, quantity: 1}
+];
+
+//Calculate total using array methods
+
+let total = cart.reduce((sum, item) => {
+    return sum + (item.price * item.quantity);
+}, 0);
+
+let discount = 0;
+if( total > 1000){
+    discount = total*0.10;
+}
+
+let finalAmount = total - discount;
+
+console.log("Total Amount: ", total);
+console.log("Discount: ", discount);
+console.log("Final Amount: ", finalAmount);
