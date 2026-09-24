@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Data Loader</title>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        #fetchBtn {
+            background: #2563eb;
+            color: white;
+        }
+
+        #jqueryBtn {
+            background: #16a34a;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #333;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        #status {
+            text-align: center;
+            margin-top: 15px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>JSON Data Loader</h1>
+
+    <p>Load and display JSON data using Fetch API and jQuery</p>
+
+    <div class="buttons">
+        <button id="fetchBtn">Load using fetch()</button>
+        <button id="jqueryBtn">Load using $.getJSON()</button>
+    </div>
+
+    <div id="status">Click a button to load data.</div>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+
+        <tbody id="tableBody">
+            <!-- Data will be inserted here dynamically -->
+        </tbody>
+    </table>
+
+</div>
+
+
+<script>
+
+    // JSON data
+    const jsonData = [
+        {
+            "id": 24070521203,
+            "name": "Tabish",
+            "email": "tabish.mansoori.batch2024@sitnagpur.siu.edu.in",
+            "course": "Computer Science"
+        },
+        {
+            "id": 24070521280,
+            "name": "Mahima",
+            "email": "mahima.dugar.batch2024@sitnagpur.siu.edu.in",
+            "course": "Computer Science"
+        },
+        {
+            "id": 24070521189,
+            "name": "Rutva",
+            "email": "rutva.sawarkar.batch2024@sitnagpur.siu.edu.in",
+            "course": "Computer Science"
+        },
+        {
+            "id": 24070521199,
+            "name": "Sonal",
+            "email": "sonal.nakhate.batch2024@sitnagpur.siu.edu.in",
+            "course": "Computer Science"
+        }
+    ];
+
+
+    // Convert JavaScript object into JSON string
+    const jsonFile = new Blob(
+        [JSON.stringify(jsonData)],
+        { type: "application/json" }
+    );
+
+    // Create a temporary URL for the JSON data
+    const jsonURL = URL.createObjectURL(jsonFile);
+
+
+    // Function to display data in table
+    function displayData(data) {
+
+        const tableBody = document.getElementById("tableBody");
+
+        // Clear previous data
+        tableBody.innerHTML = "";
+
+        // Loop through JSON data
+        data.forEach(function(student) {
+
+            const row = `
+                <tr>
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td>${student.email}</td>
+                    <td>${student.course}</td>
+                </tr>
+            `;
+
+            // Add row dynamically
+            tableBody.innerHTML += row;
+        });
+    }
+
+
+    // ================================
+    // 1. Using FETCH()
+    // ================================
+
+    document.getElementById("fetchBtn").addEventListener("click", function() {
+
+        document.getElementById("status").textContent =
+            "Loading data using fetch()...";
+
+        fetch(jsonURL)
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error("Failed to load JSON data");
+                }
+
+                return response.json();
+            })
+
+            .then(data => {
+
+                displayData(data);
+
+                document.getElementById("status").textContent =
+                    "Data loaded successfully using fetch()";
+            })
+
+            .catch(error => {
+
+                document.getElementById("status").textContent =
+                    "Error: " + error.message;
+            });
+    });
+
+
+    // ================================
+    // 2. Using jQuery $.getJSON()
+    // ================================
+
+    $("#jqueryBtn").click(function() {
+
+        $("#status").text("Loading data using $.getJSON()...");
+
+        $.getJSON(jsonURL)
+
+            .done(function(data) {
+
+                displayData(data);
+
+                $("#status").text(
+                    "Data loaded successfully using jQuery $.getJSON()"
+                );
+            })
+
+            .fail(function() {
+
+                $("#status").text(
+                    "Error loading JSON data"
+                );
+            });
+    });
+
+</script>
+
+</body>
+</html>
+
