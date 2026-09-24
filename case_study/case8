@@ -1,0 +1,227 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Job Application</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+        }
+
+        form {
+            width: 400px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+        }
+
+        .success {
+            color: green;
+        }
+
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Online Job Application Form</h2>
+
+<form id="jobForm">
+
+    <label>Full Name:</label>
+    <input type="text" id="name">
+    <span id="nameError" class="error"></span>
+
+    <label>Email:</label>
+    <input type="text" id="email">
+    <span id="emailError" class="error"></span>
+
+    <label>Phone:</label>
+    <input type="text" id="phone">
+    <span id="phoneError" class="error"></span>
+
+    <label>Qualification:</label>
+    <select id="qualification">
+        <option value="">Select Qualification</option>
+        <option value="B.Tech">B.Tech</option>
+        <option value="BCA">BCA</option>
+        <option value="MCA">MCA</option>
+        <option value="M.Tech">M.Tech</option>
+    </select>
+    <span id="qualificationError" class="error"></span>
+
+    <br><br>
+
+    <button type="submit">Apply Now</button>
+
+</form>
+
+
+<script>
+
+    // Access form elements
+    let form = document.getElementById("jobForm");
+    let name = document.getElementById("name");
+    let email = document.getElementById("email");
+    let phone = document.getElementById("phone");
+    let qualification = document.getElementById("qualification");
+
+
+    // ==============================
+    // LIVE NAME VALIDATION
+    // ==============================
+
+    name.addEventListener("input", function() {
+
+        if (name.value.trim() === "") {
+            document.getElementById("nameError").innerHTML =
+                "Name is required";
+        } else {
+            document.getElementById("nameError").innerHTML = "";
+        }
+
+    });
+
+
+    // ==============================
+    // LIVE EMAIL VALIDATION
+    // ==============================
+
+    email.addEventListener("input", function() {
+
+        let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+        if (email.value.trim() === "") {
+            document.getElementById("emailError").innerHTML =
+                "Email is required";
+        }
+        else if (!pattern.test(email.value)) {
+            document.getElementById("emailError").innerHTML =
+                "Enter a valid email";
+        }
+        else {
+            document.getElementById("emailError").innerHTML = "";
+        }
+
+    });
+
+
+    // ==============================
+    // LIVE PHONE VALIDATION
+    // ==============================
+
+    phone.addEventListener("input", function() {
+
+        let pattern = /^[0-9]{10}$/;
+
+        if (phone.value.trim() === "") {
+            document.getElementById("phoneError").innerHTML =
+                "Phone number is required";
+        }
+        else if (!pattern.test(phone.value)) {
+            document.getElementById("phoneError").innerHTML =
+                "Enter a valid 10-digit phone number";
+        }
+        else {
+            document.getElementById("phoneError").innerHTML = "";
+        }
+
+    });
+
+
+    // ==============================
+    // QUALIFICATION VALIDATION
+    // ==============================
+
+    qualification.addEventListener("change", function() {
+
+        if (qualification.value === "") {
+            document.getElementById("qualificationError").innerHTML =
+                "Please select qualification";
+        }
+        else {
+            document.getElementById("qualificationError").innerHTML = "";
+        }
+
+    });
+
+
+    // ==============================
+    // FORM SUBMIT
+    // ==============================
+
+    form.addEventListener("submit", function(event) {
+
+        // Prevent submission
+        event.preventDefault();
+
+        let valid = true;
+
+        // Check name
+        if (name.value.trim() === "") {
+            document.getElementById("nameError").innerHTML =
+                "Name is required";
+            valid = false;
+        }
+
+        // Check email
+        let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+        if (!emailPattern.test(email.value)) {
+            document.getElementById("emailError").innerHTML =
+                "Enter a valid email";
+            valid = false;
+        }
+
+        // Check phone
+        let phonePattern = /^[0-9]{10}$/;
+
+        if (!phonePattern.test(phone.value)) {
+            document.getElementById("phoneError").innerHTML =
+                "Enter a valid 10-digit phone number";
+            valid = false;
+        }
+
+        // Check qualification
+        if (qualification.value === "") {
+            document.getElementById("qualificationError").innerHTML =
+                "Please select qualification";
+            valid = false;
+        }
+
+
+        // Final result
+        if (valid) {
+            alert("Application submitted successfully!");
+            form.reset();
+        }
+        else {
+            alert("Please correct the invalid details.");
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
+```
+
+### Main events used
+
+* **`input`** → checks the name, email, and phone **immediately while typing**.
+* **`change`** → checks the qualification when the selection changes.
+* **`submit`** → validates everything again and uses `event.preventDefault()` to **stop invalid submission**.
